@@ -72,7 +72,7 @@ export const login = async (req, res) => {
 
 
     try {
-        const users = await db.query('SELECT id, password, fullname FROM users WHERE email = ?', [email]);
+        const users = await db.query('SELECT id, password, role FROM users WHERE email = ?', [email]);
 
         if (users.length === 0) {
             return res.status(401).json({ message: 'Email atau password salah.' });
@@ -85,7 +85,7 @@ export const login = async (req, res) => {
         }
         
         const token = jwt.sign(
-            { id: user.id, email: email }, JWT_SECRET, { expiresIn: '1h' });
+            { id: user.id, email: email, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
 
         res.status(200).json({ 
             message: 'Login berhasil', 

@@ -7,6 +7,7 @@ const { jwtToken } = require("./middleware/jwt");
 const { index, create, destroy, update } = require("./controller/book.controller");
 const { storage, fileFilter } = require("./lib/multer")
 const multer = require('multer')
+const fav = require('./controller/favorite.controller')
 
 
 dotenv.config()
@@ -28,6 +29,8 @@ app.get('/api/books', apiKey, jwtToken, index)
 app.post('/api/book/create', apiKey, jwtToken, upload.single('img'), create)
 app.patch('/api/book/update/:id', apiKey, jwtToken, upload.single('img'), update)
 app.delete('/api/book/delete/:id', apiKey, jwtToken, destroy)
+
+app.get('/api/favorites', apiKey, jwtToken, fav.index)
 // end routes
 
 
