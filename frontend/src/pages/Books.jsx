@@ -12,6 +12,7 @@ import { editBook } from "../api/editBook";
 import { HeartIcon } from "./components/icons/search";
 import { addfavorite } from "../api/addFavorite";
 import { useNavigate } from "react-router-dom";
+import { BookDetailModal } from "./components/book-modal";
 
 
 export default function Books() {
@@ -20,6 +21,10 @@ export default function Books() {
     const [_books, setBooks] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [onEditData, setOnEditData] = useState(undefined)
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
+    const [onDetailData, setOnDetailData] = useState(undefined)
+
+
     const navigate = useNavigate()
     const options = {
         animationData: books,
@@ -80,6 +85,11 @@ export default function Books() {
         }
     }
 
+    const handleDetailModal = (book) => {
+        setOnDetailData(book)
+        setIsDetailModalOpen(true)
+    }
+
     return (
         <div>
             <Header isLogin={isLogin} onAdded={() => init()} />
@@ -92,7 +102,7 @@ export default function Books() {
 
                             {
                                 ['BISNIS', 'FIKSI', 'SEJARAH', 'LAINNYA'].map((d) => {
-                                    return <Md3Button onClick={() => { handleUpdateKatalog(d) }} variant="outline" className="w-full md:w-auto">
+                                    return <Md3Button key={d} onClick={() => { handleUpdateKatalog(d) }} variant="outline" className="w-full md:w-auto">
                                         {d}
                                     </Md3Button>
                                 })
@@ -102,11 +112,11 @@ export default function Books() {
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {_books.map((book, idx) => (
                             <div key={idx} className="bg-white shadow-xl rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
-                                <img src={book.img} alt="book" className="w-full h-48 object-contain" />
+                                <img onClick={() => handleDetailModal(book)} src={book.img} alt="book" className="w-full h-48 object-contain  cursor-pointer" />
                                 <div className="p-6">
-                                    <span className="text-sm font-semibold text-indigo-600">{book.catalog}</span>
-                                    <h3 className="mt-2 text-xl font-bold text-gray-900">{book.title.slice(0, 40) + (book.title.length > 30 ? '...' : '')}</h3>
-                                    <p className="mt-2 text-gray-600 text-sm">oleh Penulis {book.description.slice(0, 40) + (book.description.length > 50 ? '...' : '')}</p>
+                                    <span onClick={() => handleDetailModal(book)} className="text-sm font-semibold text-indigo-600 cursor-pointer">{book.catalog}</span>
+                                    <h3 onClick={() => handleDetailModal(book)} className="mt-2 text-xl font-bold text-gray-900 cursor-pointer">{book.title.slice(0, 40) + (book.title.length > 30 ? '...' : '')}</h3>
+                                    <p onClick={() => handleDetailModal(book)} className="mt-2 text-gray-600 text-sm cursor-pointer">oleh Penulis {book.description.slice(0, 40) + (book.description.length > 50 ? '...' : '')}</p>
                                     <div className="flex justify-end gap-4 mt-6">
                                         {
                                             localStorage.getItem('role') == 'ADMIN' && <>
@@ -133,37 +143,17 @@ export default function Books() {
                     </div>
                 </div>
             </section>
-            <section id="favorit" className="py-24 bg-indigo-50">
-                <div className="container mx-auto px-6 lg:px-8">
-                    <div className="text-center mb-16 max-w-2xl mx-auto">
-                        <h2 className="text-4xl font-bold text-gray-900">Apa Kata Mereka?</h2>
-                        <p className="mt-4 text-lg text-gray-600">Lihat bagaimana PerpusOnline membantu para pecinta buku.</p>
-                    </div>
-                    <div className="grid lg:grid-cols-3 gap-8">
-                        {[
-                            { nama: 'Andini Putri', peran: 'Mahasiswa S2', foto: 'A' },
-                            { nama: 'Budi Santoso', peran: 'UI/UX Designer', foto: 'B' },
-                            { nama: 'Citra Lestari', peran: 'Penulis', foto: 'C' }
-                        ].map((testi) => (
-                            <div key={testi.nama} className="bg-white p-8 rounded-3xl shadow-lg">
-                                <p className="text-gray-700 text-lg">"Koleksinya luar biasa lengkap! Saya bisa menemukan jurnal untuk tesis sekaligus novel untuk bersantai."</p>
-                                <div className="mt-6 flex items-center">
-                                    <img src={`https://placehold.co/50x50/E0E7FF/3730A3?text=${testi.foto}`} alt="Foto profil" className="w-12 h-12 rounded-full" />
-                                    <div className="ml-4">
-                                        <p className="font-bold text-gray-900">{testi.nama}</p>
-                                        <p className="text-sm text-gray-600">{testi.peran}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+
             <EditBookModal
                 data={onEditData}
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onEditBook={(d, i) => { handleditBook(d, i) }}
+            />
+            <BookDetailModal
+                isOpen={isDetailModalOpen}
+                onClose={()=>setIsDetailModalOpen(false)}
+                book={onDetailData}
             />
             <Footer />
         </div>
