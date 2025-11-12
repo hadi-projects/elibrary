@@ -25,6 +25,7 @@ export default function Books() {
     const [onDetailData, setOnDetailData] = useState(undefined)
     const [selectedCatalog, setSelectedCatalog] = useState(undefined)
     const [filteredBooks, setFilteredBooks] = useState([])
+    const [searchTerm, setSearchTerm] = useState(undefined)
 
 
     const navigate = useNavigate()
@@ -52,15 +53,28 @@ export default function Books() {
 
     // update filter and search
     useEffect(()=>{
+        let temp=[]
         if(selectedCatalog){
             if(selectedCatalog==='SEMUA'){
-                setFilteredBooks(_books)
-                return
+                temp = _books
+            }else{
+                temp = _books.filter((d)=>d.catalog == selectedCatalog)
             }
-            const temp = _books.filter((d)=>d.catalog == selectedCatalog)
-            setFilteredBooks(temp)
         }
-    },[selectedCatalog])
+        
+        if(searchTerm){
+            if(searchTerm===''){
+                //
+            }else{
+                temp = temp.filter((d)=>
+                    d.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    d.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    d.catalog.toLowerCase().includes(searchTerm.toLowerCase()) 
+            )
+        }
+        setFilteredBooks(temp)
+    }
+    },[selectedCatalog, searchTerm])
 
     const handleDeleteBook = async (id) => {
         if (confirm("Yakin hapus buku?")) {
@@ -107,7 +121,7 @@ export default function Books() {
 
     return (
         <div>
-            <Header isLogin={isLogin} onAdded={() => init()} />
+            <Header isLogin={isLogin} onAdded={() => init()} onSearch={(s)=>setSearchTerm(s)} />
             <section id="katalog" className="py-24 bg-white min-h-screen">
                 <div className="container mx-auto px-6 lg:px-8">
                     <div className="text-center mb-16">

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { AddBookModal } from "./add-modal";
 import { createBook } from "../../api/createBook";
 
-export const Header = ({ isLogin, onAdded }) => {
+export const Header = ({ isLogin, onAdded, onSearch }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false)
   const navigate = useNavigate();
@@ -34,8 +34,6 @@ export const Header = ({ isLogin, onAdded }) => {
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-wrap justify-between items-center gap-4">
 
-
-
             <a onClick={() => handleNavClick('/')} href="#" className="text-3xl font-bold text-indigo-600 cursor-pointer">
               E<span className="text-indigo-400">library</span>
             </a>
@@ -50,7 +48,8 @@ export const Header = ({ isLogin, onAdded }) => {
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <SearchIcon className="w-5 h-5 text-gray-400" />
                 </div>
-                <input
+                <input onFocus={()=>navigate('/books')}
+                onChange={(e)=>onSearch(e.target.value)}
                   type="text"
                   placeholder="Cari buku"
                   className="w-full border-2 border-gray-200 bg-gray-50 rounded-full pl-12 pr-4 py-3 text-gray-800 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
