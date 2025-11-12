@@ -1,5 +1,6 @@
 node_modules
 .env
+storage/img/
 !storage/img/default.svg
 !storage/img/1762943846-7-effective.png
 !storage/img/1762943846-Aku-Bukannya-Menyerah.jpg
