@@ -1,7 +1,7 @@
 import { config } from '../config';
 
 
-export async function fetchBook() {
+export async function fetchBook(limit=500) {
 
     const option = {
         method: 'GET',
@@ -12,7 +12,7 @@ export async function fetchBook() {
         }
     }
 
-    return await fetch(`${config.API_HOST}/api/books`, option)
+    return await fetch(`${config.API_HOST}/api/books?limit=${limit}`, option)
         .then(response => response.json())
         .catch(error => {
             console.log('Error fetching and parsing data', error);

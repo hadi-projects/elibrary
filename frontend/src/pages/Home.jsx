@@ -23,7 +23,7 @@ export default function Home() {
     const { View } = useLottie(options);
 
     const init = async () => {
-        const res = await fetchBook()
+        const res = await fetchBook(4)
         setBooks(res.data)
     }
 
