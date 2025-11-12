@@ -62,7 +62,7 @@ export const update = async (req, res) => {
     const { title, description, catalog } = req.body;
 
     if (!title && !description && req.file === undefined) {
-        return res.status(400).json({ message: 'Title, description, atau img harus disediakan untuk update data.' });
+        return res.status(400).json({ message: 'Title, description, catalog atau img harus disediakan untuk update data.' });
     }
 
     try {
@@ -85,6 +85,10 @@ export const update = async (req, res) => {
         if (description && String(description).length > 0) {
             updateFields.push('description = ?');
             updateValues.push(description);
+        }
+        if (catalog && String(catalog).length > 0) {
+            updateFields.push('catalog = ?');
+            updateValues.push(catalog);
         }
         if (imgName !== undefined) {
             updateFields.push('img = ?');
