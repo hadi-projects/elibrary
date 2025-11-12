@@ -19,10 +19,11 @@ export default function Login() {
 
             if (!res?.token) {
                 alert("something went wrong!")
+            }else{
+                localStorage.setItem('token', res.token)
+                alert('Login berhasil!');
+                navigate('/')
             }
-            localStorage.setItem('token', res.token)
-            alert('Login berhasil!');
-            navigate('/')
         } catch (error) {
             alert(error.toString())
         }

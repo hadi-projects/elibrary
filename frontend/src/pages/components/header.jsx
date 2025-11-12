@@ -59,7 +59,7 @@ export const Header = ({ isLogin }) => {
               {
                 isLogin &&
                 <>
-                  <Md3Button onClick={() => handleNavClick('login')} variant="solid" className="w-full md:w-auto">
+                  <Md3Button onClick={() => {localStorage.removeItem('token');handleNavClick('login')}} variant="solid" className="w-full md:w-auto">
                     Logout
                   </Md3Button>
                 </>

@@ -7,7 +7,7 @@ dotenv.config();
 export const index = async (req, res) => {
     try {
         const books = await db.query(
-            'SELECT id, title, description, img FROM books WHERE deleted = 0 ORDER BY updated_at DESC',
+            'SELECT id, title, description, img, catalog FROM books WHERE deleted = 0 ORDER BY updated_at DESC',
         );
 
         books.map((data)=>data.img = `${process.env.HOST}/img/${data.img}`)
