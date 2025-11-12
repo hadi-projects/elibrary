@@ -22,6 +22,7 @@ export default function Login() {
             }else{
                 localStorage.setItem('token', res.token)
                 localStorage.setItem('role', res.user.role)
+                localStorage.setItem('email', res.user.email)
                 alert('Login berhasil!');
                 navigate('/')
             }

@@ -7,6 +7,7 @@ import Login from './pages/auth/Login.jsx';
 import Register from './pages/auth/Register.jsx';
 import Books from './pages/Books.jsx';
 import Favorit from './pages/Favorit.jsx';
+import { Profile } from './pages/Profile.jsx';
 
 createRoot(document.getElementById('root')).render(
   // <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<Home/>}/>
         <Route path="/books" element={<Books/>}/>
         <Route path="/favorites" element={<Favorit/>}/>
+        <Route path="/profile" element={<Profile/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
