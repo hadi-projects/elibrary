@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CloseIcon, MenuIcon, SearchIcon } from "./icons/search";
 import { Md3Button } from "./button";
 import { useNavigate } from 'react-router-dom';
-import { AddBookModal } from "./modal";
+import { AddBookModal } from "./add-modal";
 import { createBook } from "../../api/createBook";
 
 export const Header = ({ isLogin, onAdded }) => {

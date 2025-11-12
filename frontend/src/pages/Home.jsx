@@ -7,11 +7,14 @@ import { useLottie } from "lottie-react";
 import books from '../../public/books.json'
 import Footer from "./components/footer";
 import { deleteBook } from "../api/deleteBook";
+import { EditBookModal } from "./components/edit-modal";
 
 export default function Home() {
 
     const [isLogin, setIsLogin] = useState(false)
     const [_books, setBooks] = useState([])
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [onEditData, setOnEditData] = useState(undefined)
     const options = {
         animationData: books,
         loop: true
@@ -34,7 +37,7 @@ export default function Home() {
     }, [])
 
     const handleDeleteBook = async (id) => {
-        if(confirm("Yakin hapus buku?")){
+        if (confirm("Yakin hapus buku?")) {
             const res = await deleteBook(id)
             if (res.data) {
                 alert("Berhasil hapus buku")
@@ -87,7 +90,7 @@ export default function Home() {
                                     <h3 className="mt-2 text-xl font-bold text-gray-900">{book.title.slice(0, 40) + (book.title.length > 30 ? '...' : '')}</h3>
                                     <p className="mt-2 text-gray-600 text-sm">oleh Penulis {book.description.slice(0, 40) + (book.description.length > 50 ? '...' : '')}</p>
                                     <div className="flex justify-end gap-4 mt-6">
-                                        <Md3Button onClick={() => { setIsModalOpen(true) }} variant="outline" className="w-full md:w-auto">
+                                        <Md3Button onClick={() => { setOnEditData(book);setIsModalOpen(true) }} variant="outline" className="w-full md:w-auto">
                                             Edit
                                         </Md3Button>
                                         <Md3Button onClick={() => { handleDeleteBook(book.id) }} variant="solid" className="w-full md:w-auto">
@@ -126,6 +129,12 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+            <EditBookModal
+                data={onEditData}
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onEditBook={(d) => { console.log(d) }}
+            />
             <Footer />
         </div>
     )
