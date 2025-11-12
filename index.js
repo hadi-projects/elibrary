@@ -8,7 +8,7 @@ const { index, create, destroy, update } = require("./controller/book.controller
 const { storage, fileFilter } = require("./lib/multer")
 const multer = require('multer')
 const fav = require('./controller/favorite.controller')
-const roleGuard = require("./middleware/role_guard")
+const { roleGuard } = require("./middleware/role_guard")
 
 
 dotenv.config()

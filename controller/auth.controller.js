@@ -90,7 +90,7 @@ export const login = async (req, res) => {
         res.status(200).json({ 
             message: 'Login berhasil', 
             token: token,
-            user: { id: user.id, fullname: user.fullname, email: email }
+            user: { id: user.id, email: email, role: role.user }
         });
     } catch (error) {
         console.error('Error: ', error.toString());

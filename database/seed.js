@@ -5,15 +5,15 @@ async function main() {
         // admin1234 = $2a$12$FiTrHMgvouipibcbhgnyDOfpdY8F.PVFXOzzmE3I2/Kq5Bu.eWkuW
         // admin
         await db.query(`
-            INSERT INTO users (fullname, email, password, role) value
-            ('admin', 'admin@mail.com', '$2a$12$bOYxY4vpQu1nnkxb4botSuRMaqEhxbIx6ynF8aVj76ALsLxg7t3O6', 'ADMIN');`)
+            INSERT INTO users (email, password, role) value
+            ('admin@mail.com', '$2a$12$bOYxY4vpQu1nnkxb4botSuRMaqEhxbIx6ynF8aVj76ALsLxg7t3O6', 'ADMIN');`)
         console.log('OK: jalankan seed admin user berhasil')
 
         // hadi1234 = $2a$12$bOYxY4vpQu1nnkxb4botSuRMaqEhxbIx6ynF8aVj76ALsLxg7t3O6
         // user
         await db.query(`
-        INSERT INTO users (fullname, email, password) value
-        ('hadi', 'hadi@mail.com', '$2a$12$bOYxY4vpQu1nnkxb4botSuRMaqEhxbIx6ynF8aVj76ALsLxg7t3O6');`)
+        INSERT INTO users (email, password) value
+        ('hadi@mail.com', '$2a$12$bOYxY4vpQu1nnkxb4botSuRMaqEhxbIx6ynF8aVj76ALsLxg7t3O6');`)
         console.log('OK: jalankan seed user berhasil')
 
         // books
