@@ -8,6 +8,7 @@ import books from '../../public/books.json'
 import Footer from "./components/footer";
 import { deleteBook } from "../api/deleteBook";
 import { EditBookModal } from "./components/edit-modal";
+import { editBook } from "../api/editBook";
 
 export default function Home() {
 
@@ -45,6 +46,19 @@ export default function Home() {
             } else {
                 alert("Something went wrong")
             }
+        }
+    }
+
+    const handleeditBook = async (data, id) => {
+        console.log([
+            data, id
+        ])
+        const res = await editBook(data, id)
+        if (res.data) {
+            alert("Berhasil Edit buku")
+            init()
+        } else {
+            alert("Something went wrong")
         }
     }
 
@@ -90,7 +104,7 @@ export default function Home() {
                                     <h3 className="mt-2 text-xl font-bold text-gray-900">{book.title.slice(0, 40) + (book.title.length > 30 ? '...' : '')}</h3>
                                     <p className="mt-2 text-gray-600 text-sm">oleh Penulis {book.description.slice(0, 40) + (book.description.length > 50 ? '...' : '')}</p>
                                     <div className="flex justify-end gap-4 mt-6">
-                                        <Md3Button onClick={() => { setOnEditData(book);setIsModalOpen(true) }} variant="outline" className="w-full md:w-auto">
+                                        <Md3Button onClick={() => { setOnEditData(book); setIsModalOpen(true) }} variant="outline" className="w-full md:w-auto">
                                             Edit
                                         </Md3Button>
                                         <Md3Button onClick={() => { handleDeleteBook(book.id) }} variant="solid" className="w-full md:w-auto">
@@ -133,7 +147,7 @@ export default function Home() {
                 data={onEditData}
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onEditBook={(d) => { console.log(d) }}
+                onEditBook={(d, i) => { handleeditBook(d, i) }}
             />
             <Footer />
         </div>

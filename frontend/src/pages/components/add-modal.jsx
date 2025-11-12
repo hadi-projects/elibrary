@@ -119,15 +119,6 @@ export function AddBookModal({ isOpen, onClose, onAddBook }) {
               Sampul Buku (Upload)
             </label>
 
-            <input
-              type="file"
-              id="coverFile"
-              accept="image/*"
-              onChange={(e) => setCoverFile(e.target.files[0])}
-              required
-              className="mt-2 block w-full text-sm text-gray-700 border-2 border-gray-200 rounded-full bg-gray-50 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200"
-            />
-
             {coverPreviewUrl && (
               <div className="mt-4 flex justify-center h-48 object-contain">
                 <img 
@@ -137,6 +128,16 @@ export function AddBookModal({ isOpen, onClose, onAddBook }) {
                 />
               </div>
             )}
+            
+            <input
+              type="file"
+              id="coverFile"
+              accept="image/*"
+              onChange={(e) => setCoverFile(e.target.files[0])}
+              required
+              className="mt-2 block w-full text-sm text-gray-700 border-2 border-gray-200 rounded-full bg-gray-50 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200"
+            />
+
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-end pt-4">

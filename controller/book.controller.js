@@ -10,7 +10,7 @@ export const index = async (req, res) => {
             'SELECT id, title, description, img, catalog FROM books WHERE deleted = 0 ORDER BY updated_at DESC',
         );
 
-        books.map((data)=>data.img = `${process.env.HOST}/img/${data.img}`)
+        books.map((data) => data.img = `${process.env.HOST}/img/${data.img}`)
 
         res.status(200).json({ 'status': 'success', data: books });
     } catch (error) {
@@ -21,13 +21,16 @@ export const index = async (req, res) => {
 
 export const create = async (req, res) => {
     const userId = req.user.id;
-    const { title, description } = req.body;
+    const { title, description, catalog } = req.body;
 
     if (!title || String(title).length === 0) {
         return res.status(400).json({ message: 'title wajib diisi.' });
     }
     if (!description || String(description).length === 0) {
         return res.status(400).json({ message: 'description wajib diisi.' });
+    }
+    if (!catalog || String(catalog).length === 0) {
+        return res.status(400).json({ message: 'catalog wajib diisi.' });
     }
     if (!req?.file) {
         return res.status(400).json({ message: 'img wajib diberikan.' });
@@ -40,8 +43,8 @@ export const create = async (req, res) => {
 
     try {
         await db.query(
-            'INSERT INTO books (user_id, title, description, img) VALUES (?, ?, ?, ?)',
-            [userId, title, description, imgName]
+            'INSERT INTO books (user_id, title, description, img, catalog) VALUES (?, ?, ?, ?, ?)',
+            [userId, title, description, imgName, catalog]
         );
 
         res.status(201).json({
@@ -56,18 +59,20 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
     const bookId = req.params.id;
-    const { title, description } = req.body;
+    const { title, description, catalog } = req.body;
 
     if (!title && !description && req.file === undefined) {
         return res.status(400).json({ message: 'Title, description, atau img harus disediakan untuk update data.' });
     }
 
     try {
-
-        // get file name
-        const uniqueSuffix = Date.now().toString().slice(0, 10) + '-';
-        const ext = path.extname(req.file.originalname);
-        const imgName = uniqueSuffix + req.file.fieldname + ext
+        let imgName;
+        if (req.file) {
+            // get file name
+            const uniqueSuffix = Date.now().toString().slice(0, 10) + '-';
+            const ext = path.extname(req.file.originalname);
+            imgName = uniqueSuffix + req.file.fieldname + ext
+        }
 
 
         const updateFields = [];

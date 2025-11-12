@@ -8,11 +8,13 @@ export function EditBookModal({ isOpen, onClose, onEditBook, data }) {
   const [description, setDescription] = useState('');
   const [coverFile, setCoverFile] = useState(null);
   const fileInputRef = useRef(null);
+  const [coverPreviewUrl, setCoverPreviewUrl] = useState(null);
+
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onEditBook({ title, category, description, coverFile });
+    onEditBook({ title, category, description, coverFile }, data.id);
     setTitle('');
     setCategory('');
     setDescription('');
@@ -31,6 +33,7 @@ export function EditBookModal({ isOpen, onClose, onEditBook, data }) {
       setCategory(data.catalog ?? '');
       setDescription(data.description ?? '');
       setCoverFile(null);
+      setCoverPreviewUrl(data.img)
       if (fileInputRef.current) fileInputRef.current.value = '';
     } else {
       setTitle('');
@@ -40,6 +43,18 @@ export function EditBookModal({ isOpen, onClose, onEditBook, data }) {
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   }, [isOpen, data]);
+
+  useEffect(() => {
+    if (!coverFile) {
+      setCoverPreviewUrl(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(coverFile);
+    setCoverPreviewUrl(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [coverFile]);
 
 
   if (!isOpen) return null;
@@ -122,23 +137,29 @@ export function EditBookModal({ isOpen, onClose, onEditBook, data }) {
           </div>
 
           <div>
-            <img src={data.img} alt="" />
-          </div>
-          
-          <div>
             <label htmlFor="coverFile" className="block text-sm font-medium text-gray-700">
               Sampul Buku (Upload)
             </label>
+
+            { coverPreviewUrl && (
+                <div className="mt-4 flex justify-center h-48 object-contain">
+                  <img 
+                    src={ coverPreviewUrl} 
+                    alt="Pratinjau Sampul" 
+                    className="w-48 h-auto object-cover rounded-lg shadow-md" 
+                  />
+                </div>
+              )}
 
             <input
               type="file"
               id="coverFile"
               accept="image/*"
               onChange={(e) => setCoverFile(e.target.files[0])}
-              required
               className="mt-2 block w-full text-sm text-gray-700 border-2 border-gray-200 rounded-full bg-gray-50 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200"
             />
           </div>
+
 
           <div className="flex flex-col sm:flex-row gap-4 justify-end pt-4">
             <Md3Button onClick={onClose} variant="outline" className="w-full sm:w-auto">
