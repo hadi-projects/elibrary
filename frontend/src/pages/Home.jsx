@@ -1,23 +1,22 @@
 import { useEffect } from "react";
 import { Header } from "./components/header";
 import { fetchBook } from "../api/fetchBook";
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 
 export default function Home() {
 
-    const navigate = useNavigate();
+    const [isLogin, setIsLogin] = useState(false)
 
     useEffect(() => {
-        if (!localStorage.getItem('token') || localStorage.getItem('token') === '') {
-            navigate('/login')
+        if (localStorage.getItem('token') && localStorage.getItem('token') !== '') {
+            setIsLogin(true)
         }
         fetchBook()
     }, [])
 
     return (
         <div>
-            <Header />
-
+            <Header isLogin={isLogin} />
         </div>
     )
 }

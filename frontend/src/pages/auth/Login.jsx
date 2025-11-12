@@ -65,11 +65,12 @@ export default function Login() {
                             type="password"
                             id="password"
                             required
+                            minLength={8}
                             className="mt-2 w-full border-2 border-gray-200 bg-gray-50 rounded-full px-6 py-3 text-gray-800 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
                         />
                     </div>
                     <Md3Button type="submit" variant="solid" className="w-full">
-                        Login
+                        Masuk
                     </Md3Button>
                 </form>
                 <p className="text-center text-sm text-gray-600 mt-8">

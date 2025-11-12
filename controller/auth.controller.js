@@ -66,8 +66,8 @@ export const login = async (req, res) => {
     else if (!String(email).includes("@") || !String(email).includes(".")) {
         return res.status(400).json({ message: 'email tidak valid.' });
     }
-    if (!password || String(password).length === 0) {
-        return res.status(400).json({ message: 'password wajib diisi.' });
+    if (!password || String(password).length < 8) {
+        return res.status(400).json({ message: 'password wajib diisi dan minimal 8.' });
     }
 
 
