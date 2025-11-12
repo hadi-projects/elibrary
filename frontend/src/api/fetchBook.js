@@ -6,9 +6,9 @@ export async function fetchBook() {
     const option = {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json', 
-            'X-Api-Key':config.API_KEY,
-            'Authorization': config.JWT, 
+            'Content-Type': 'application/json',
+            'X-Api-Key': config.API_KEY,
+            'Authorization': config.JWT_PREFIX + localStorage.getItem('token'),
         }
     }
 

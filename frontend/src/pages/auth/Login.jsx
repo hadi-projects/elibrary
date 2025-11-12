@@ -8,7 +8,6 @@ export default function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-
     const handleSubmit = async(e) => {
         e.preventDefault();
         
@@ -27,7 +26,6 @@ export default function Login() {
         } catch (error) {
             alert(error.toString())
         }
-        console.log(res)
     };
 
 
