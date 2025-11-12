@@ -21,8 +21,6 @@ export const index = async (req, res) => {
 export const create = async (req, res) => {
     const userId = req.user.id;
     const { title, description } = req.body;
-
-    
     
     if (!title || String(title).length === 0) {
         return res.status(400).json({ message: 'title wajib diisi.' });
@@ -49,6 +47,30 @@ export const create = async (req, res) => {
             message: 'Berhasil simpan buku baru', 
             data: true
         });
+    } catch (error) {
+        console.error('Error: ', error.toString());
+        res.status(500).json({ message: 'Something went wrong.' });
+    }
+}
+
+export const destroy = async (req, res) => {
+    const bookId = req.params.id;
+
+    try {
+        const result = await db.query(
+            'UPDATE books SET deleted = 1 WHERE id = ?;', 
+            [bookId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Buku tidak ditemukan.' });
+        }
+
+        res.status(200).json({ 
+            message: 'Berhasil dihapus.', 
+            data: true
+        });
+        
     } catch (error) {
         console.error('Error: ', error.toString());
         res.status(500).json({ message: 'Something went wrong.' });
