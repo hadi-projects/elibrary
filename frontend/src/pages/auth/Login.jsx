@@ -21,6 +21,7 @@ export default function Login() {
                 alert("something went wrong!")
             }else{
                 localStorage.setItem('token', res.token)
+                localStorage.setItem('role', res.user.role)
                 alert('Login berhasil!');
                 navigate('/')
             }

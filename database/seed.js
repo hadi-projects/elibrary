@@ -6,7 +6,7 @@ async function main() {
         // admin
         await db.query(`
             INSERT INTO users (email, password, role) value
-            ('admin@mail.com', '$2a$12$bOYxY4vpQu1nnkxb4botSuRMaqEhxbIx6ynF8aVj76ALsLxg7t3O6', 'ADMIN');`)
+            ('admin@mail.com', '$2a$12$FiTrHMgvouipibcbhgnyDOfpdY8F.PVFXOzzmE3I2/Kq5Bu.eWkuW', 'ADMIN');`)
         console.log('OK: jalankan seed admin user berhasil')
 
         // hadi1234 = $2a$12$bOYxY4vpQu1nnkxb4botSuRMaqEhxbIx6ynF8aVj76ALsLxg7t3O6

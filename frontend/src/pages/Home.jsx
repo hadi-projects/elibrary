@@ -17,14 +17,14 @@ export default function Home() {
     };
     const { View } = useLottie(options);
 
+    const init = async () => {
+        const res = await fetchBook()
+        setBooks(res.data)
+    }
+
     useEffect(() => {
-        const init = async () => {
-            const res = await fetchBook()
-            setBooks(res.data)
-        }
 
         if (localStorage.getItem('token') && localStorage.getItem('token') !== '') {
-            console.log('a');
             setIsLogin(true)
             init()
         } else {
@@ -35,7 +35,7 @@ export default function Home() {
 
     return (
         <div>
-            <Header isLogin={isLogin} />
+            <Header isLogin={isLogin} onAdded={()=>init()}/>
             <section className="bg-gradient-to-b from-indigo-50 via-white to-white pt-20 pb-28">
                 <div className="container mx-auto px-6 lg:px-8">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
