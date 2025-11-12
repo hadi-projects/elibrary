@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
+const { register, login } = require("./controller/auth.controller");
 
 dotenv.config()
 
@@ -10,6 +11,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 // end initial setting
+
+// initial routes
+app.post('/api/auth/register', register );
+app.post('/api/auth/login', login );
+// end routes
 
 
 // start server
