@@ -52,29 +52,26 @@ export default function Books() {
     }, [])
 
     // update filter and search
-    useEffect(()=>{
-        let temp=[]
-        if(selectedCatalog){
-            if(selectedCatalog==='SEMUA'){
-                temp = _books
-            }else{
-                temp = _books.filter((d)=>d.catalog == selectedCatalog)
-            }
-        }
-        
-        if(searchTerm){
-            if(searchTerm===''){
-                //
-            }else{
-                temp = temp.filter((d)=>
-                    d.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    d.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    d.catalog.toLowerCase().includes(searchTerm.toLowerCase()) 
-            )
-        }
-        setFilteredBooks(temp)
+    // Gabungkan filter catalog dan search dalam satu useEffect
+useEffect(() => {
+    let result = _books;
+
+    // Filter by catalog
+    if (selectedCatalog && selectedCatalog !== 'SEMUA') {
+        result = result.filter((d) => d.catalog === selectedCatalog);
     }
-    },[selectedCatalog, searchTerm])
+
+    // Filter by search term
+    if (searchTerm && searchTerm.trim() !== '') {
+        result = result.filter((d) =>
+            d.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            d.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            d.catalog.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }
+
+    setFilteredBooks(result);
+}, [_books, selectedCatalog, searchTerm]);
 
     const handleDeleteBook = async (id) => {
         if (confirm("Yakin hapus buku?")) {
