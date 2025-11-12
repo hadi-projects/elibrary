@@ -7,7 +7,6 @@ async function main(){
         await db.query(`
         CREATE TABLE users (
             id BIGINT PRIMARY KEY AUTO_INCREMENT,
-            fullname VARCHAR(100) DEFAULT '',
             email VARCHAR(50) UNIQUE NOT NULL,
             password VARCHAR(250) NOT NULL,
             role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
