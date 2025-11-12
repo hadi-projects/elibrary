@@ -18,9 +18,9 @@ async function main(){
 
         // todo table migration
         await db.query(`
-            CREATE TABLE book (
+            CREATE TABLE books (
             id BIGINT PRIMARY KEY AUTO_INCREMENT,
-            title VARCHAR(50) NOT NULL,
+            title VARCHAR(150) NOT NULL,
             img VARCHAR(50) NOT NULL,
             description VARCHAR(250),
             deleted BOOLEAN DEFAULT FALSE,
