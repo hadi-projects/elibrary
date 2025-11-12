@@ -9,6 +9,7 @@ const { storage, fileFilter } = require("./lib/multer")
 const multer = require('multer')
 const fav = require('./controller/favorite.controller')
 const { roleGuard } = require("./middleware/role_guard")
+const path = require('path')
 
 
 dotenv.config()
@@ -19,6 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 const upload = multer({ storage, fileFilter })
+app.use(express.static(path.join(__dirname, 'storage')));
+
 // end initial setting
 
 

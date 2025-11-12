@@ -10,6 +10,8 @@ export const index = async (req, res) => {
             'SELECT id, title, description, img FROM books WHERE deleted = 0 ORDER BY updated_at DESC',
         );
 
+        books.map((data)=>data.img = `${process.env.HOST}/img/${data.img}`)
+
         res.status(200).json({ 'status': 'success', data: books });
     } catch (error) {
         console.error('Error: ', error.toString());
