@@ -2,22 +2,22 @@ import { useState } from "react";
 import { Md3Button } from "../components/button";
 import { useNavigate } from 'react-router-dom';
 import { login } from "../../api/login";
+import { useEffect } from "react";
 
 export default function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        
         try {
             const res = await login({
-                email:email,
-                password:password
+                email: email,
+                password: password
             })
 
-            if(!res?.token){
+            if (!res?.token) {
                 alert("something went wrong!")
             }
             localStorage.setItem('token', res.token)
@@ -27,6 +27,12 @@ export default function Login() {
             alert(error.toString())
         }
     };
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            navigate('/')
+        }
+    }, [])
 
 
     return (
