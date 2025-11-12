@@ -12,6 +12,7 @@ import { editBook } from "../api/editBook";
 import { HeartIcon } from "./components/icons/search";
 import { addfavorite } from "../api/addFavorite";
 import { useNavigate } from "react-router-dom";
+import { BookDetailModal } from "./components/book-modal";
 
 
 export default function Home() {
@@ -20,6 +21,8 @@ export default function Home() {
     const [_books, setBooks] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [onEditData, setOnEditData] = useState(undefined)
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
+    const [onDetailData, setOnDetailData] = useState(undefined)
     const navigate = useNavigate()
     const options = {
         animationData: books,
@@ -80,6 +83,12 @@ export default function Home() {
         }
     }
 
+    const handleDetailModal = (book) => {
+        setOnDetailData(book)
+        setIsDetailModalOpen(true)
+    }
+
+
     return (
         <div>
             <Header isLogin={isLogin} onAdded={() => init()} />
@@ -116,11 +125,11 @@ export default function Home() {
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {_books.map((book, idx) => (
                             <div key={idx} className="bg-white shadow-xl rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
-                                <img src={book.img} alt="book" className="w-full h-48 object-contain" />
+                                <img onClick={() => handleDetailModal(book)} src={book.img} alt="book" className="w-full h-48 object-contain  cursor-pointer" />
                                 <div className="p-6">
-                                    <span className="text-sm font-semibold text-indigo-600">{book.catalog}</span>
-                                    <h3 className="mt-2 text-xl font-bold text-gray-900">{book.title.slice(0, 40) + (book.title.length > 30 ? '...' : '')}</h3>
-                                    <p className="mt-2 text-gray-600 text-sm">oleh Penulis {book.description.slice(0, 40) + (book.description.length > 50 ? '...' : '')}</p>
+                                    <span onClick={() => handleDetailModal(book)} className="text-sm font-semibold text-indigo-600 cursor-pointer">{book.catalog}</span>
+                                    <h3 onClick={() => handleDetailModal(book)} className="mt-2 text-xl font-bold text-gray-900 cursor-pointer">{book.title.slice(0, 40) + (book.title.length > 30 ? '...' : '')}</h3>
+                                    <p onClick={() => handleDetailModal(book)} className="mt-2 text-gray-600 text-sm cursor-pointer">oleh Penulis {book.description.slice(0, 40) + (book.description.length > 50 ? '...' : '')}</p>
                                     <div className="flex justify-end gap-4 mt-6">
                                         {
                                             localStorage.getItem('role') == 'ADMIN' && <>
@@ -146,7 +155,7 @@ export default function Home() {
                         ))}
                     </div>
                 </div>
-                <div className="w-full  h-2 justify-center flex my-8 cursor-pointer underline text-blue-600">
+                <div onClick={()=>navigate('/books')} className="w-full  h-2 justify-center flex my-8 cursor-pointer underline text-blue-600">
                     Lihat Semua
                 </div>
             </section>
@@ -181,6 +190,11 @@ export default function Home() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onEditBook={(d, i) => { handleditBook(d, i) }}
+            />
+            <BookDetailModal
+                isOpen={isDetailModalOpen}
+                onClose={() => setIsDetailModalOpen(false)}
+                book={onDetailData}
             />
             <Footer />
         </div>
