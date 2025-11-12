@@ -6,6 +6,7 @@ import { Md3Button } from "./components/button";
 import { useLottie } from "lottie-react";
 import books from '../../public/books.json'
 import Footer from "./components/footer";
+import { deleteBook } from "../api/deleteBook";
 
 export default function Home() {
 
@@ -23,7 +24,6 @@ export default function Home() {
     }
 
     useEffect(() => {
-
         if (localStorage.getItem('token') && localStorage.getItem('token') !== '') {
             setIsLogin(true)
             init()
@@ -33,9 +33,21 @@ export default function Home() {
 
     }, [])
 
+    const handleDeleteBook = async (id) => {
+        if(confirm("Yakin hapus buku?")){
+            const res = await deleteBook(id)
+            if (res.data) {
+                alert("Berhasil hapus buku")
+                init()
+            } else {
+                alert("Something went wrong")
+            }
+        }
+    }
+
     return (
         <div>
-            <Header isLogin={isLogin} onAdded={()=>init()}/>
+            <Header isLogin={isLogin} onAdded={() => init()} />
             <section className="bg-gradient-to-b from-indigo-50 via-white to-white pt-20 pb-28">
                 <div className="container mx-auto px-6 lg:px-8">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -69,11 +81,19 @@ export default function Home() {
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {_books.map((book, idx) => (
                             <div key={idx} className="bg-white shadow-xl rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
-                                <img src={book.img} alt="book" className="w-full h-48 object-contain"  />
+                                <img src={book.img} alt="book" className="w-full h-48 object-contain" />
                                 <div className="p-6">
                                     <span className="text-sm font-semibold text-indigo-600">{book.catalog}</span>
-                                    <h3 className="mt-2 text-xl font-bold text-gray-900">{book.title.slice(0,40)+(book.title.length>30?'...':'')}</h3>
-                                    <p className="mt-2 text-gray-600 text-sm">oleh Penulis {book.description.slice(0,40)+(book.description.length>50?'...':'')}</p>
+                                    <h3 className="mt-2 text-xl font-bold text-gray-900">{book.title.slice(0, 40) + (book.title.length > 30 ? '...' : '')}</h3>
+                                    <p className="mt-2 text-gray-600 text-sm">oleh Penulis {book.description.slice(0, 40) + (book.description.length > 50 ? '...' : '')}</p>
+                                    <div className="flex justify-end gap-4 mt-6">
+                                        <Md3Button onClick={() => { setIsModalOpen(true) }} variant="outline" className="w-full md:w-auto">
+                                            Edit
+                                        </Md3Button>
+                                        <Md3Button onClick={() => { handleDeleteBook(book.id) }} variant="solid" className="w-full md:w-auto">
+                                            Delete
+                                        </Md3Button>
+                                    </div>
                                 </div>
                             </div>
                         ))}
