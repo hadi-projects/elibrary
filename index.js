@@ -29,12 +29,13 @@ app.use(express.static(path.join(__dirname, 'storage')));
 app.post('/api/auth/register', apiKey, register);
 app.post('/api/auth/login', apiKey, login);
 
-app.get('/api/books', apiKey, jwtToken, index)
+app.get('/api/books', apiKey, index)
 app.post('/api/book/create', apiKey, jwtToken, roleGuard, upload.single('img'), create)
 app.patch('/api/book/update/:id', apiKey, jwtToken, roleGuard, upload.single('img'), update)
 app.delete('/api/book/delete/:id', apiKey, jwtToken, roleGuard, destroy)
 
 app.get('/api/favorites', apiKey, jwtToken, fav.index)
+app.post('/api/favorite/create', apiKey, jwtToken, fav.create)
 // end routes
 
 

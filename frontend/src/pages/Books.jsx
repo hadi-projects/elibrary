@@ -14,7 +14,7 @@ import { addfavorite } from "../api/addFavorite";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Home() {
+export default function Books() {
 
     const [isLogin, setIsLogin] = useState(false)
     const [_books, setBooks] = useState([])
@@ -28,7 +28,7 @@ export default function Home() {
     const { View } = useLottie(options);
 
     const init = async () => {
-        const res = await fetchBook(4)
+        const res = await fetchBook()
         setBooks(res.data)
     }
 
@@ -83,35 +83,21 @@ export default function Home() {
     return (
         <div>
             <Header isLogin={isLogin} onAdded={() => init()} />
-            <section className="bg-gradient-to-b from-indigo-50 via-white to-white pt-20 pb-28">
-                <div className="container mx-auto px-6 lg:px-8">
-                    <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <div className="text-center md:text-left">
-                            <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight">
-                                Temukan Dunia
-                                <span className="text-indigo-600"> dalam Kata.</span>
-                            </h1>
-                            <p className="mt-6 text-lg text-gray-600 max-w-lg mx-auto md:mx-0">
-                                Jelajahi ribuan buku, jurnal, dan koleksi audio terbaik dari seluruh dunia. Perpustakaan digital Anda, selalu ada untuk Anda.
-                            </p>
-                            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                                <Md3Button onClick={() => onNavigate('register')} variant="solid">
-                                    Mulai Menjelajah
-                                </Md3Button>
-                            </div>
-                        </div>
-                        <div className="flex justify-center">
-                            {View}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <section id="katalog" className="py-24 bg-white">
                 <div className="container mx-auto px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold text-gray-900">Buku Terbaru</h2>
+                        <h2 className="text-4xl font-bold text-gray-900">Semua Buku</h2>
                         <p className="mt-4 text-lg text-gray-600">Buku-buku yang paling sering dibaca minggu ini.</p>
+                        <div className="flex gap-4 justify-center my-4">
+
+                            {
+                                ['BISNIS', 'FIKSI', 'SEJARAH', 'LAINNYA'].map((d) => {
+                                    return <Md3Button onClick={() => { handleUpdateKatalog(d) }} variant="outline" className="w-full md:w-auto">
+                                        {d}
+                                    </Md3Button>
+                                })
+                            }
+                        </div>
                     </div>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {_books.map((book, idx) => (
@@ -145,9 +131,6 @@ export default function Home() {
                             </div>
                         ))}
                     </div>
-                </div>
-                <div className="w-full  h-2 justify-center flex my-8 cursor-pointer underline text-blue-600">
-                    Lihat Semua
                 </div>
             </section>
             <section id="favorit" className="py-24 bg-indigo-50">

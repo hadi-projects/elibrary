@@ -14,3 +14,20 @@ export const index = async (req, res) => {
         res.status(500).json({ message: 'Something went wrong.' });
     }
 }
+
+export const create = async (req, res) => {
+    const userId = req.user.id;
+    const bookId = req.query.bookId
+
+    try {
+        await db.query(
+            'INSERT INTO user_has_favorits (book_id, user_id) VALUES (?,?);',
+            [bookId, userId]
+        );
+
+        res.status(200).json({ 'status': 'Berhasil tambah favorite', data: true });
+    } catch (error) {
+        console.error('Error: ', error.toString());
+        res.status(500).json({ message: 'Something went wrong.' });
+    }
+}

@@ -58,9 +58,12 @@ export const Header = ({ isLogin, onAdded }) => {
               </div>
 
               <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 border-t md:border-t-0 pt-4 md:pt-0">
-                <a href="#katalog" onClick={() => handleNavClick('/')} className="text-gray-700 font-medium hover:text-indigo-600 transition-colors">Katalog</a>
-                <a href="#favorit" onClick={() => handleNavClick('/')} className="text-gray-700 font-medium hover:text-indigo-600 transition-colors">Favorit</a>
+                <a onClick={() => handleNavClick('/books')} className="text-gray-700 font-medium hover:text-indigo-600 transition-colors cursor-pointer">Katalog</a>
+                <a onClick={() => handleNavClick('/favorites')} className="text-gray-700 font-medium hover:text-indigo-600 transition-colors cursor-pointer">Favorit</a>
+                {
+                  isLogin &&
                 <a href="#profile" onClick={() => handleNavClick('/')} className="text-gray-700 font-medium hover:text-indigo-600 transition-colors">Profile</a>
+                }
               </div>
 
               <div className="flex flex-col md:flex-row gap-4 mt-4 md:mt-0 md:ml-4">

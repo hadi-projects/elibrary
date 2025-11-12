@@ -5,12 +5,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Login from './pages/auth/Login.jsx';
 import Register from './pages/auth/Register.jsx';
+import Books from './pages/Books.jsx';
+import Favorit from './pages/Favorit.jsx';
 
 createRoot(document.getElementById('root')).render(
   // <StrictMode>
    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home/>}/>
+        <Route path="/books" element={<Books/>}/>
+        <Route path="/favorites" element={<Favorit/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
