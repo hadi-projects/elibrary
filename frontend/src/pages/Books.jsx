@@ -23,6 +23,8 @@ export default function Books() {
     const [onEditData, setOnEditData] = useState(undefined)
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
     const [onDetailData, setOnDetailData] = useState(undefined)
+    const [selectedCatalog, setSelectedCatalog] = useState(undefined)
+    const [filteredBooks, setFilteredBooks] = useState([])
 
 
     const navigate = useNavigate()
@@ -35,6 +37,7 @@ export default function Books() {
     const init = async () => {
         const res = await fetchBook()
         setBooks(res.data)
+        setFilteredBooks(res.data)
     }
 
     useEffect(() => {
@@ -46,6 +49,18 @@ export default function Books() {
         init()
 
     }, [])
+
+    // update filter and search
+    useEffect(()=>{
+        if(selectedCatalog){
+            if(selectedCatalog==='SEMUA'){
+                setFilteredBooks(_books)
+                return
+            }
+            const temp = _books.filter((d)=>d.catalog == selectedCatalog)
+            setFilteredBooks(temp)
+        }
+    },[selectedCatalog])
 
     const handleDeleteBook = async (id) => {
         if (confirm("Yakin hapus buku?")) {
@@ -93,7 +108,7 @@ export default function Books() {
     return (
         <div>
             <Header isLogin={isLogin} onAdded={() => init()} />
-            <section id="katalog" className="py-24 bg-white">
+            <section id="katalog" className="py-24 bg-white min-h-screen">
                 <div className="container mx-auto px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-bold text-gray-900">Semua Buku</h2>
@@ -101,16 +116,22 @@ export default function Books() {
                         <div className="flex gap-4 justify-center my-4">
 
                             {
-                                ['BISNIS', 'FIKSI', 'SEJARAH', 'LAINNYA'].map((d) => {
-                                    return <Md3Button key={d} onClick={() => { handleUpdateKatalog(d) }} variant="outline" className="w-full md:w-auto">
+                                ['SEMUA', 'BISNIS', 'FIKSI', 'SEJARAH', 'LAINNYA'].map((d) => {
+                                    return <Md3Button key={d} onClick={() => { setSelectedCatalog(d) }} variant={selectedCatalog==d?'solid':'outline'} className="w-full md:w-auto">
                                         {d}
                                     </Md3Button>
                                 })
                             }
                         </div>
                     </div>
+                        {
+                            filteredBooks.length == 0 &&
+                            <div className="flex w-full justify-center my-32">
+                                <p>Buku kosong</p>
+                            </div>
+                        }
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {_books.map((book, idx) => (
+                        {filteredBooks.map((book, idx) => (
                             <div key={idx} className="bg-white shadow-xl rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
                                 <img onClick={() => handleDetailModal(book)} src={book.img} alt="book" className="w-full h-48 object-contain  cursor-pointer" />
                                 <div className="p-6">
