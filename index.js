@@ -3,6 +3,8 @@ const cors = require("cors");
 const dotenv = require('dotenv');
 const { register, login } = require("./controller/auth.controller");
 const { apiKey } = require("./middleware/api_token");
+const { jwtToken } = require("./middleware/jwt");
+const { index } = require("./controller/book.controller");
 
 dotenv.config()
 
@@ -17,7 +19,7 @@ app.use(cors());
 app.post('/api/auth/register', apiKey, register );
 app.post('/api/auth/login', apiKey, login );
 
-// app.get('/api/books', apiKey, )
+app.get('/api/books', apiKey, jwtToken, index)
 // end routes
 
 
