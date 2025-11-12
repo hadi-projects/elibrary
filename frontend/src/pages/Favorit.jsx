@@ -108,7 +108,7 @@ export default function Favorit() {
                                             <span onClick={() => handleDetailModal(book)} className="text-sm font-semibold text-indigo-600 cursor-pointer">{book.catalog}</span>
                                             <h3 onClick={() => handleDetailModal(book)} className="mt-2 text-xl font-bold text-gray-900 cursor-pointer">{book.title.slice(0, 40) + (book.title.length > 30 ? '...' : '')}</h3>
                                             <p onClick={() => handleDetailModal(book)} className="mt-2 text-gray-600 text-sm cursor-pointer">oleh Penulis {book.description.slice(0, 40) + (book.description.length > 50 ? '...' : '')}</p>
-                                            <div className="flex justify-end gap-4 mt-6">
+                                            <div className="flex justify-end gap-4 my-6">
                                                 {
                                                     localStorage.getItem('role') == 'ADMIN' && <>
                                                         <Md3Button onClick={() => { setOnEditData(book); setIsModalOpen(true) }} variant="outline" className="w-full md:w-auto">

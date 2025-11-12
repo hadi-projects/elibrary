@@ -19,13 +19,13 @@ export const Header = ({ isLogin, onAdded, onSearch }) => {
 
   const handleAddBook = async (data) => {
     const res = await createBook(data)
-    if(res.data){
+    if (res.data) {
       alert("Berhasil tambah buku")
       onAdded()
-    }else{
+    } else {
       alert("Something went wrong")
     }
-   }
+  }
 
 
   return (
@@ -48,8 +48,8 @@ export const Header = ({ isLogin, onAdded, onSearch }) => {
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <SearchIcon className="w-5 h-5 text-gray-400" />
                 </div>
-                <input onFocus={()=>navigate('/books')}
-                onChange={(e)=>onSearch(e.target.value)}
+                <input onFocus={() => navigate('/books')}
+                  onChange={(e) => onSearch(e.target.value)}
                   type="text"
                   placeholder="Cari buku"
                   className="w-full border-2 border-gray-200 bg-gray-50 rounded-full pl-12 pr-4 py-3 text-gray-800 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
@@ -61,7 +61,7 @@ export const Header = ({ isLogin, onAdded, onSearch }) => {
                 <a onClick={() => handleNavClick('/favorites')} className="text-gray-700 font-medium hover:text-indigo-600 transition-colors cursor-pointer">Favorit</a>
                 {
                   isLogin &&
-                <a href="#profile" onClick={() => handleNavClick('/')} className="text-gray-700 font-medium hover:text-indigo-600 transition-colors">Profile</a>
+                  <a href="#profile" onClick={() => handleNavClick('/')} className="text-gray-700 font-medium hover:text-indigo-600 transition-colors">Profile</a>
                 }
               </div>
 
@@ -69,10 +69,10 @@ export const Header = ({ isLogin, onAdded, onSearch }) => {
                 {
                   !isLogin &&
                   <>
-                    <Md3Button onClick={() => handleNavClick('login')} variant="outline" className="w-full md:w-auto">
+                    <Md3Button onClick={() => handleNavClick('/login')} variant="outline" className="w-full md:w-auto">
                       Login
                     </Md3Button>
-                    <Md3Button onClick={() => handleNavClick('register')} variant="solid" className="w-full md:w-auto">
+                    <Md3Button onClick={() => handleNavClick('/register')} variant="solid" className="w-full md:w-auto">
                       Register
                     </Md3Button>
                   </>
