@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require('dotenv');
 const { register, login } = require("./controller/auth.controller");
+const { apiKey } = require("./middleware/api_token");
 
 dotenv.config()
 
@@ -13,9 +14,13 @@ app.use(cors());
 // end initial setting
 
 // initial routes
-app.post('/api/auth/register', register );
-app.post('/api/auth/login', login );
+app.post('/api/auth/register', apiKey, register );
+app.post('/api/auth/login', apiKey, login );
+
+// app.get('/api/books', apiKey, )
 // end routes
+
+
 
 
 // start server
