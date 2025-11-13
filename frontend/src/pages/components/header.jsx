@@ -61,7 +61,7 @@ export const Header = ({ isLogin, onAdded, onSearch }) => {
                 <a onClick={() => handleNavClick('/favorites')} className="text-gray-700 font-medium hover:text-indigo-600 transition-colors cursor-pointer">Favorit</a>
                 {
                   isLogin &&
-                  <a  onClick={() => handleNavClick('/profile')} className="text-gray-700 font-medium hover:text-indigo-600 transition-colors">Profile</a>
+                  <a  onClick={() => handleNavClick('/profile')} className="text-gray-700 font-medium hover:text-indigo-600 transition-colors cursor-pointer">Profile</a>
                 }
               </div>
 
