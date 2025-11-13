@@ -14,6 +14,7 @@ import { addfavorite } from "../api/addFavorite";
 import { useNavigate } from "react-router-dom";
 import { BookDetailModal } from "./components/book-modal";
 import { Trash } from "lucide-react";
+import { deleteFavorite } from "../api/deleteFavorite";
 
 
 export default function Home() {
@@ -89,6 +90,23 @@ export default function Home() {
         setIsDetailModalOpen(true)
     }
 
+    const handleDeleteFavorit = async (bookId) => {
+        if (!isLogin) {
+            alert("register dan buat akun untuk fitur favorit")
+            navigate('/register')
+            return
+        }
+
+        const res = await deleteFavorite(bookId)
+        if (res.data) {
+            alert("Berhasil Delete Favorit")
+            init()
+        } else {
+            alert("Something went wrong")
+        }
+    }
+
+
 
     return (
         <div>
@@ -144,14 +162,13 @@ export default function Home() {
                                         }
                                     </div>
                                     <div className="flex justify-end gap-4 ">
-                                        <Md3Button onClick={() => { handleAddFavorit(book.id) }} variant={book.isFavorite ? "solid" : "outline"} className="w-full">
+                                        <Md3Button onClick={() => { book.isFavorite ? handleDeleteFavorit(book.id) : handleAddFavorit(book.id) }} variant={book.isFavorite ? "solid" : "outline"} className="w-full">
                                             <div className="flex justify-center items-center gap-2 ">
                                                 {
                                                     book.isFavorite ?
                                                         <Trash /> :
                                                         <HeartIcon className={'w-8'} />
                                                 }
-
                                                 {book.isFavorite ? "Hapus Dari Favorit" : "Tambah ke Favorit"}
                                             </div>
                                         </Md3Button>

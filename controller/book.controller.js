@@ -30,27 +30,31 @@ export const index = async (req, res) => {
 
         const authHeader = req.headers['authorization'];
         if (authHeader) {
-            const token = authHeader.split(' ')[1];
-            if (token) {
-                const user = await jwt.verify(token, JWT_SECRET);
-                if (user?.id && books.length > 0) {
-                    const bookIds = books.map(b => b.id).filter(id => id != null);
-
-                    if (bookIds.length > 0) {
-                        const placeholders = bookIds.map(() => '?').join(',');
-                        const favsResult = await db.query(
-                            `SELECT book_id FROM user_has_favorits
-             WHERE deleted = 0 AND user_id = ? AND book_id IN (${placeholders})`,
-                            [user.id, ...bookIds]
-                        );
-
-                        const favRows = Array.isArray(favsResult) && favsResult.length === 2 && Array.isArray(favsResult[0])
-                            ? favsResult[0]
-                            : favsResult;
-
-                        favSet = new Set((favRows || []).map(r => Number(r.book_id)));
+            try {
+                const token = authHeader.split(' ')[1];
+                if (token) {
+                    const user = await jwt.verify(token, JWT_SECRET);
+                    if (user?.id && books.length > 0) {
+                        const bookIds = books.map(b => b.id).filter(id => id != null);
+    
+                        if (bookIds.length > 0) {
+                            const placeholders = bookIds.map(() => '?').join(',');
+                            const favsResult = await db.query(
+                                `SELECT book_id FROM user_has_favorits
+                 WHERE deleted = 0 AND user_id = ? AND book_id IN (${placeholders})`,
+                                [user.id, ...bookIds]
+                            );
+    
+                            const favRows = Array.isArray(favsResult) && favsResult.length === 2 && Array.isArray(favsResult[0])
+                                ? favsResult[0]
+                                : favsResult;
+    
+                            favSet = new Set((favRows || []).map(r => Number(r.book_id)));
+                        }
                     }
                 }
+            } catch (error) {
+                console.log(error);
             }
         }
 
