@@ -13,6 +13,7 @@ import { HeartIcon } from "./components/icons/search";
 import { addfavorite } from "../api/addFavorite";
 import { useNavigate } from "react-router-dom";
 import { BookDetailModal } from "./components/book-modal";
+import { Trash } from "lucide-react";
 
 
 export default function Home() {
@@ -104,7 +105,7 @@ export default function Home() {
                                 Jelajahi ribuan buku, jurnal, dan koleksi audio terbaik dari seluruh dunia. Perpustakaan digital Anda, selalu ada untuk Anda.
                             </p>
                             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                                <Md3Button onClick={() => onNavigate('register')} variant="solid">
+                                <Md3Button onClick={() => { isLogin ? navigate('/register') : navigate('/books') }} variant="solid">
                                     Mulai Menjelajah
                                 </Md3Button>
                             </div>
@@ -143,10 +144,15 @@ export default function Home() {
                                         }
                                     </div>
                                     <div className="flex justify-end gap-4 ">
-                                        <Md3Button onClick={() => { handleAddFavorit(book.id) }} variant="outline" className="w-full">
+                                        <Md3Button onClick={() => { handleAddFavorit(book.id) }} variant={book.isFavorite ? "solid" : "outline"} className="w-full">
                                             <div className="flex justify-center items-center gap-2 ">
-                                                <HeartIcon className={'w-8'} />
-                                                Tambah ke Favorit
+                                                {
+                                                    book.isFavorite ?
+                                                        <Trash /> :
+                                                        <HeartIcon className={'w-8'} />
+                                                }
+
+                                                {book.isFavorite ? "Hapus Dari Favorit" : "Tambah ke Favorit"}
                                             </div>
                                         </Md3Button>
                                     </div>
@@ -155,7 +161,7 @@ export default function Home() {
                         ))}
                     </div>
                 </div>
-                <div onClick={()=>navigate('/books')} className="w-full  h-2 justify-center flex my-8 cursor-pointer underline text-blue-600">
+                <div onClick={() => navigate('/books')} className="w-full  h-2 justify-center flex my-8 cursor-pointer underline text-blue-600">
                     Lihat Semua
                 </div>
             </section>

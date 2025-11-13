@@ -13,6 +13,7 @@ import { HeartIcon } from "./components/icons/search";
 import { addfavorite } from "../api/addFavorite";
 import { useNavigate } from "react-router-dom";
 import { BookDetailModal } from "./components/book-modal";
+import { Trash } from "lucide-react";
 
 
 export default function Books() {
@@ -53,25 +54,25 @@ export default function Books() {
 
     // update filter and search
     // Gabungkan filter catalog dan search dalam satu useEffect
-useEffect(() => {
-    let result = _books;
+    useEffect(() => {
+        let result = _books;
 
-    // Filter by catalog
-    if (selectedCatalog && selectedCatalog !== 'SEMUA') {
-        result = result.filter((d) => d.catalog === selectedCatalog);
-    }
+        // Filter by catalog
+        if (selectedCatalog && selectedCatalog !== 'SEMUA') {
+            result = result.filter((d) => d.catalog === selectedCatalog);
+        }
 
-    // Filter by search term
-    if (searchTerm && searchTerm.trim() !== '') {
-        result = result.filter((d) =>
-            d.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            d.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            d.catalog.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-    }
+        // Filter by search term
+        if (searchTerm && searchTerm.trim() !== '') {
+            result = result.filter((d) =>
+                d.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                d.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                d.catalog.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
 
-    setFilteredBooks(result);
-}, [_books, selectedCatalog, searchTerm]);
+        setFilteredBooks(result);
+    }, [_books, selectedCatalog, searchTerm]);
 
     const handleDeleteBook = async (id) => {
         if (confirm("Yakin hapus buku?")) {
@@ -118,7 +119,7 @@ useEffect(() => {
 
     return (
         <div>
-            <Header isLogin={isLogin} onAdded={() => init()} onSearch={(s)=>setSearchTerm(s)} />
+            <Header isLogin={isLogin} onAdded={() => init()} onSearch={(s) => setSearchTerm(s)} />
             <section id="katalog" className="py-24 bg-white min-h-screen">
                 <div className="container mx-auto px-6 lg:px-8">
                     <div className="text-center mb-16">
@@ -128,19 +129,19 @@ useEffect(() => {
 
                             {
                                 ['SEMUA', 'BISNIS', 'FIKSI', 'SEJARAH', 'LAINNYA'].map((d) => {
-                                    return <Md3Button key={d} onClick={() => { setSelectedCatalog(d) }} variant={selectedCatalog==d?'solid':'outline'} className="w-full md:w-auto">
+                                    return <Md3Button key={d} onClick={() => { setSelectedCatalog(d) }} variant={selectedCatalog == d ? 'solid' : 'outline'} className="w-full md:w-auto">
                                         {d}
                                     </Md3Button>
                                 })
                             }
                         </div>
                     </div>
-                        {
-                            filteredBooks.length == 0 &&
-                            <div className="flex w-full justify-center my-32">
-                                <p>Buku kosong</p>
-                            </div>
-                        }
+                    {
+                        filteredBooks.length == 0 &&
+                        <div className="flex w-full justify-center my-32">
+                            <p>Buku kosong</p>
+                        </div>
+                    }
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {filteredBooks.map((book, idx) => (
                             <div key={idx} className="bg-white shadow-xl rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
@@ -162,10 +163,15 @@ useEffect(() => {
                                         }
                                     </div>
                                     <div className="flex justify-end gap-4 ">
-                                        <Md3Button onClick={() => { handleAddFavorit(book.id) }} variant="outline" className="w-full">
+                                        <Md3Button onClick={() => { handleAddFavorit(book.id) }} variant={book.isFavorite ? "solid" : "outline"} className="w-full">
                                             <div className="flex justify-center items-center gap-2 ">
-                                                <HeartIcon className={'w-8'} />
-                                                Tambah ke Favorit
+                                                {
+                                                    book.isFavorite ?
+                                                        <Trash /> :
+                                                        <HeartIcon className={'w-8'} />
+                                                }
+
+                                                {book.isFavorite ? "Hapus Dari Favorit" : "Tambah ke Favorit"}
                                             </div>
                                         </Md3Button>
                                     </div>
@@ -184,7 +190,7 @@ useEffect(() => {
             />
             <BookDetailModal
                 isOpen={isDetailModalOpen}
-                onClose={()=>setIsDetailModalOpen(false)}
+                onClose={() => setIsDetailModalOpen(false)}
                 book={onDetailData}
             />
             <Footer />

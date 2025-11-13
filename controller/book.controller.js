@@ -1,25 +1,63 @@
 import db from '../database/connection.js';
 import dotenv from 'dotenv';
 import path from 'path'
+import jwt from 'jsonwebtoken';
+
 dotenv.config();
 
 
 export const index = async (req, res) => {
     try {
         const limit = req.query.limit
-        const user_id = req.user?.id
+        const JWT_SECRET = process.env.JWT_SECRET;
 
-        const books = await db.query(
-            `SELECT 
-                id, title, description, img, catalog 
-            FROM books 
-            WHERE deleted = 0 
-            ORDER BY updated_at DESC 
-            LIMIT ?`,
-            [limit]
+        const booksResult = await db.query(
+            `SELECT id, title, description, img, catalog
+     FROM books
+     WHERE deleted = 0
+     ORDER BY updated_at DESC
+     ${limit ? 'LIMIT ?' : ''}`,
+            limit ? [limit] : []
         );
 
-        books.map((data) => data.img = `${process.env.HOST}/img/${data.img}`)
+        let books = Array.isArray(booksResult) && booksResult.length === 2 && Array.isArray(booksResult[0])
+            ? booksResult[0]
+            : booksResult;
+
+        books = Array.isArray(books) ? books : [];
+
+        let favSet = new Set();
+
+        const authHeader = req.headers['authorization'];
+        if (authHeader) {
+            const token = authHeader.split(' ')[1];
+            if (token) {
+                const user = await jwt.verify(token, JWT_SECRET);
+                if (user?.id && books.length > 0) {
+                    const bookIds = books.map(b => b.id).filter(id => id != null);
+
+                    if (bookIds.length > 0) {
+                        const placeholders = bookIds.map(() => '?').join(',');
+                        const favsResult = await db.query(
+                            `SELECT book_id FROM user_has_favorits
+             WHERE deleted = 0 AND user_id = ? AND book_id IN (${placeholders})`,
+                            [user.id, ...bookIds]
+                        );
+
+                        const favRows = Array.isArray(favsResult) && favsResult.length === 2 && Array.isArray(favsResult[0])
+                            ? favsResult[0]
+                            : favsResult;
+
+                        favSet = new Set((favRows || []).map(r => Number(r.book_id)));
+                    }
+                }
+            }
+        }
+
+        books.forEach(b => {
+            b.isFavorite = favSet.has(Number(b.id)); 
+            b.img = `${process.env.HOST}/img/${b.img}`;
+        });
 
         res.status(200).json({ 'status': 'success', data: books });
     } catch (error) {

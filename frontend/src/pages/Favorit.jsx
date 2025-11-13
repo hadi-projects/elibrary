@@ -13,6 +13,7 @@ import { HeartIcon } from "./components/icons/search";
 import { addfavorite } from "../api/addFavorite";
 import { useNavigate } from "react-router-dom";
 import { BookDetailModal } from "./components/book-modal";
+import { Trash } from "lucide-react";
 
 
 export default function Favorit() {
@@ -31,7 +32,7 @@ export default function Favorit() {
 
     const init = async () => {
         const res = await fetchBook()
-        setBooks(res.data)
+        setBooks(res.data.filter((d) => d.isFavorite))
     }
 
     useEffect(() => {
@@ -121,10 +122,14 @@ export default function Favorit() {
                                                 }
                                             </div>
                                             <div className="flex justify-end gap-4 ">
-                                                <Md3Button onClick={() => { handleAddFavorit(book.id) }} variant="outline" className="w-full">
+                                                <Md3Button onClick={() => { handleAddFavorit(book.id) }} variant={book.isFavorite ? "solid" : "outline"} className="w-full">
                                                     <div className="flex justify-center items-center gap-2 ">
-                                                        <HeartIcon className={'w-8'} />
-                                                        Tambah ke Favorit
+                                                        {
+                                                            book.isFavorite?
+                                                            <Trash/>:
+                                                            <HeartIcon className={'w-8'} />
+                                                        }
+                                                        {book.isFavorite ? "Hapus Dari Favorit" : "Tambah ke Favorit"}
                                                     </div>
                                                 </Md3Button>
                                             </div>
