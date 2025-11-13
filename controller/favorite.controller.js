@@ -31,3 +31,27 @@ export const create = async (req, res) => {
         res.status(500).json({ message: 'Something went wrong.' });
     }
 }
+
+export const destroy = async (req, res) => {
+    const bookId = req.params.id;
+
+    try {
+            const result = await db.query(
+                'UPDATE user_has_favorits SET deleted = 1 WHERE book_id = ?;',
+                [bookId]
+            );
+    
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ message: 'Buku tidak ditemukan.' });
+            }
+    
+            res.status(200).json({
+                message: 'Berhasil dihapus.',
+                data: true
+            });
+    
+        } catch (error) {
+            console.error('Error: ', error.toString());
+            res.status(500).json({ message: 'Something went wrong.' });
+        }
+}

@@ -34,8 +34,9 @@ app.post('/api/book/create', apiKey, jwtToken, roleGuard, upload.single('img'), 
 app.patch('/api/book/update/:id', apiKey, jwtToken, roleGuard, upload.single('img'), update)
 app.delete('/api/book/delete/:id', apiKey, jwtToken, roleGuard, destroy)
 
-app.get('/api/favorites', apiKey, jwtToken, fav.index)
+// app.get('/api/favorites', apiKey, jwtToken, fav.index)
 app.post('/api/favorite/create', apiKey, jwtToken, fav.create)
+app.delete('/api/favorite/delete/:id', apiKey, jwtToken, fav.destroy)
 // end routes
 
 

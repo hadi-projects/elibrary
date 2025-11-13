@@ -9,6 +9,7 @@ import Footer from "./components/footer";
 import { deleteBook } from "../api/deleteBook";
 import { EditBookModal } from "./components/edit-modal";
 import { editBook } from "../api/editBook";
+import { deleteFavorite } from "../api/deleteFavorite";
 import { HeartIcon } from "./components/icons/search";
 import { addfavorite } from "../api/addFavorite";
 import { useNavigate } from "react-router-dom";
@@ -83,6 +84,22 @@ export default function Favorit() {
         }
     }
 
+    const handleDeleteFavorit = async (bookId) => {
+        if (!isLogin) {
+            alert("register dan buat akun untuk fitur favorit")
+            navigate('/register')
+            return
+        }
+
+        const res = await deleteFavorite(bookId)
+        if (res.data) {
+            alert("Berhasil Delete Favorit")
+            init()
+        } else {
+            alert("Something went wrong")
+        }
+    }
+
     const handleDetailModal = (book) => {
         setOnDetailData(book)
         setIsDetailModalOpen(true)
@@ -115,14 +132,14 @@ export default function Favorit() {
                                                         <Md3Button onClick={() => { setOnEditData(book); setIsModalOpen(true) }} variant="outline" className="w-full md:w-auto">
                                                             Edit
                                                         </Md3Button>
-                                                        <Md3Button onClick={() => { handleDeleteBook(book.id) }} variant="solid" className="w-full md:w-auto">
+                                                        <Md3Button onClick={() => {handleDeleteBook(book.id) }} variant="solid" className="w-full md:w-auto">
                                                             Delete
                                                         </Md3Button>
                                                     </>
                                                 }
                                             </div>
                                             <div className="flex justify-end gap-4 ">
-                                                <Md3Button onClick={() => { handleAddFavorit(book.id) }} variant={book.isFavorite ? "solid" : "outline"} className="w-full">
+                                                <Md3Button onClick={() => {  book.isFavorite?handleDeleteFavorit(book.id):handleAddFavorit(book.id) }} variant={book.isFavorite ? "solid" : "outline"} className="w-full">
                                                     <div className="flex justify-center items-center gap-2 ">
                                                         {
                                                             book.isFavorite?
