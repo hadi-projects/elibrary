@@ -2,18 +2,18 @@ import db from './connection.js';
 
 async function main() {
     try {
-        // admin1234 = $2a$12$FiTrHMgvouipibcbhgnyDOfpdY8F.PVFXOzzmE3I2/Kq5Bu.eWkuW
+        // Admin1234 = $2a$12$.ICX7x0.YGlWnWM1T6M4BepwBbWJJ89cxwuAXwgRXSDpUN6F1VWIi
         // admin
         await db.query(`
             INSERT INTO users (email, password, role) value
-            ('admin@mail.com', '$2a$12$FiTrHMgvouipibcbhgnyDOfpdY8F.PVFXOzzmE3I2/Kq5Bu.eWkuW', 'ADMIN');`)
+            ('admin@mail.com', '$2a$12$.ICX7x0.YGlWnWM1T6M4BepwBbWJJ89cxwuAXwgRXSDpUN6F1VWIi', 'ADMIN');`)
         console.log('OK: jalankan seed admin user berhasil')
 
-        // hadi1234 = $2a$12$bOYxY4vpQu1nnkxb4botSuRMaqEhxbIx6ynF8aVj76ALsLxg7t3O6
+        // Hadi1234 = $2a$12$fJ1KYAhRX2i7BbUjIT.oM.zYWOFrG0pohNH1z4RkcyOA9t9f30A0e
         // user
         await db.query(`
         INSERT INTO users (email, password) value
-        ('hadi@mail.com', '$2a$12$bOYxY4vpQu1nnkxb4botSuRMaqEhxbIx6ynF8aVj76ALsLxg7t3O6');`)
+        ('hadi@mail.com', '$2a$12$fJ1KYAhRX2i7BbUjIT.oM.zYWOFrG0pohNH1z4RkcyOA9t9f30A0e');`)
         console.log('OK: jalankan seed user berhasil')
 
         // books
