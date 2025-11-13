@@ -3,6 +3,7 @@
 Ini adalah aplikasi Elibrary React modern untuk platform perpustakaan digital, yang disebut "Elibrary". Aplikasi ini dibangun sebagai aplikasi halaman tunggal (Single Page Application) dengan beberapa komponen interaktif dan alur navigasi.
 
 [DEMO](https://drive.google.com/file/d/1K-_g2rQjLzlrG9j9AQym-uov2DZpEw5H/view?usp=sharing)
+[Postman Collection](./Elibrary.postman_collection.json)
 
 Fitur Utama
 Aplikasi ini mencakup beberapa fitur inti yang dibangun dalam satu file React:
